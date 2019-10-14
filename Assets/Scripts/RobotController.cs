@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RobotController : MonoBehaviour
 {
@@ -9,6 +7,10 @@ public class RobotController : MonoBehaviour
 
     // Stores a reference of the SpriteRenderer component (if any)
     SpriteRenderer _renderer;
+
+    public float speedMultiplier = 10;
+
+    public float jumpMultiplier = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +24,25 @@ public class RobotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float hMove = Input.GetAxis("Horizontal");
+
+        Vector2 moveForce = Vector2.right * hMove * speedMultiplier;
+        _rigidbody.AddForce(moveForce);
+
+        // Input.GetButtonDown("Jump")
         
+        if(Input.GetButtonDown("Jump"))
+        {
+            Vector2 jumpForce = Vector2.up * jumpMultiplier;
+            _rigidbody.AddForce(jumpForce, ForceMode2D.Impulse);
+        }
+
+        if(hMove > 0)
+        {
+            _renderer.flipX = false;
+        } else if (hMove < 0)
+        {
+            _renderer.flipX = true;
+        }
     }
 }
